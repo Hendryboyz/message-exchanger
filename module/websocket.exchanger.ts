@@ -1,15 +1,12 @@
-import WebSocket from "ws";
-import { IExchanger, IReceiver, ISender } from "./interface";
-import { WebSocketMessageFactory } from "./websocket.message-factory";
+import { IExchanger, IMessageFactory, IReceiver, ISender } from "./interface";
 
 export class WebSocketExchanger implements IExchanger {
   private sender: ISender;
   private receiver: IReceiver;
 
-  constructor(private ws: WebSocket) {
-    const factory = new WebSocketMessageFactory(this.ws);
-    this.sender = factory.createSender();
-    this.receiver = factory.createReceiver();
+  constructor(private readonly factory: IMessageFactory) {
+    this.sender = this.factory.createSender();
+    this.receiver = this.factory.createReceiver();
   }
 
   send(data: any): void {
@@ -29,5 +26,4 @@ export class WebSocketExchanger implements IExchanger {
       this.receiver.confirmAckReceived(message.messageId)
     }
   }
-
 }
