@@ -16,3 +16,7 @@ export interface IMessageFactory {
   createReceiver(): IReceiver;
 }
 
+export interface IExchanger {
+  send(data: any): void;
+  handleMessage(data: any): void;
+}
