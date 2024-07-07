@@ -1,6 +1,7 @@
+import WebSocket from "ws";
 import { IMessageFactory, ISender, IReceiver } from "./interface";
-import { WebSocketReceiver } from "./websocket-receiver";
-import { WebSocketSender } from "./websocket-sender";
+import { WebSocketReceiver } from "./websocket.receiver";
+import { WebSocketSender } from "./websocket.sender";
 
 
 export class WebSocketMessageFactory implements IMessageFactory {
