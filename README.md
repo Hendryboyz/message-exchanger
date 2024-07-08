@@ -2,6 +2,8 @@
 
 ## 設計
 
+![High Level Design](./IMG_2458.jpg)
+
 需求中不論server還是client，皆有可能作為發送端發送訊息或是接收方接收訊息，因此分成 **Sender(發送端)** 和 **Receiver(接收端)** 兩個角色
 
 在該情境中最大的挑戰是「網路是不可靠的」因此身為
@@ -23,6 +25,20 @@
 接收端與發送端分別透過 `ack` 和  `ack_received` 兩類個訊號，來得知對方有確實收到訊息，以此迴避網路不可靠這件事情
 
 ## 實作
+
+![Exchange Module Class Diagram](./IMG_2459.jpg)
+
+* `WebSocketExchanger`: 主要面對client的class，負責透過`sender`發送訊息，並利用`receiver`接收訊息，並針對不同訊息做不同的事情
+* `WebSocketSender`: 封裝Websocket發送訊息並回覆`ack_received`的邏輯，包括訊息的重新發送
+* `WebSocketReceiver`: 封裝Websocket接收訊息並回覆`ack`的邏輯，包含ack的重新發送
+* `WebSocketMessageFactory`: 建構出處理Websocket的`Sender`和`Receiver`的抽象工廠
+* `IMessageFactory`, `ISender`, `IReceiver`: 以上實作的介面
+
+透過讓`Exchanger`相依在`IMessageFactory`，可以使`Exchanger`
+
+* 完全不需要認識任何傳輸協定相關的實作
+* 專注在處理訊息交換的邏輯實作與擴充
+* 支援其他傳輸協定更方便
 
 ## 說明
 
